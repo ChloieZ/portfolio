@@ -65,7 +65,7 @@ console.log('\n[场景二：file / embed 两种视频填法 + 已填链接]');
       video: { type: 'embed', src: 'https://player.bilibili.com/player.html?bvid=BV1xx' },
       link: { url: 'https://example.com/b', label: '下载体验' },
     },
-  ], { name: '张三', title: 'AI 产品经理', bio: 'bio', email: 'a@b.com', github: 'https://g.com' });
+  ], { name: '张三', title: '产品经理', bio: 'bio', email: 'a@b.com', github: 'https://g.com' });
 
   check('本地视频渲染 <video> 并带 poster', r.byTag('video').length === 1 && r.byTag('video')[0].poster === 'assets/img/a.jpg');
   check('embed 渲染 <iframe> 指向 bilibili', r.byTag('iframe').length === 1 && r.byTag('iframe')[0].src.includes('bilibili'));

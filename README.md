@@ -112,7 +112,7 @@
 ```js
 profile: {
   name: '张三',
-  title: 'AI 产品经理',
+  title: '产品经理',
   bio: '一句话介绍……',
   email: 'you@example.com',      // 可选
   github: 'https://github.com/…', // 可选
