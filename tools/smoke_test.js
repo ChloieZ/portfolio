@@ -58,8 +58,9 @@ check('卡片标题与数据一致',
 check('锚点 id 与数据一致且不重复',
   cards.map(c => c.id).join('|') === products.map(p => p.id).join('|')
   && new Set(cards.map(c => c.id)).size === products.length);
-check('每行 2 个小标题（产品介绍 / 核心亮点）', byClass('col-title').length === products.length * 2,
-  byClass('col-title').length + ' vs ' + products.length * 2);
+check('每行 3 个小标题（产品介绍 / 核心亮点 / 演示视频）',
+  byClass('col-title').length === products.length * 3,
+  byClass('col-title').length + ' vs ' + products.length * 3);
 
 console.log('\n[横向布局结构]');
 const rowBodies = byClass('row-body');
@@ -70,10 +71,14 @@ check('列顺序为 介绍 → 亮点 → 媒体',
   rowBodies.every(b => b.children.map(c => c.className).join('|') === 'col col-intro|col col-points|col col-media'),
   rowBodies[0] ? rowBodies[0].children.map(c => c.className).join('|') : '');
 check('每个产品行首有 .row-head', byClass('row-head').length === products.length, String(byClass('row-head').length));
-check('媒体列里视频在入口之前',
+check('媒体列结构为 标题 → 视频 → 入口',
   rowBodies.every(b => {
     const media = b.children[2];
-    return media.children.length === 2 && /video/.test(media.children[0].className);
+    return media.children.length === 3 &&
+           media.children[0].className === 'col-title' &&
+           media.children[0].textContent === '演示视频' &&
+           /video/.test(media.children[1].className) &&
+           media.children[2].className === 'entry';
   }));
 
 console.log('\n[演示视频]');

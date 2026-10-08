@@ -257,6 +257,7 @@
 
     // 第三列：演示视频 + 体验入口
     var colMedia = el('div', 'col col-media');
+    colMedia.appendChild(el('div', 'col-title', '演示视频'));
     colMedia.appendChild(buildVideo(product.video));
     colMedia.appendChild(buildEntry(product));
 
