@@ -1,0 +1,19 @@
+# 部署到 GitHub Pages 时不想公开的东西（按需删掉多余的）
+需求.txt
+预览截图.png
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 操作系统 / 编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+
+# 日志与临时文件
+*.log
+.tmp/

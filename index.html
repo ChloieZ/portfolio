@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>产品作品集</title>
+<meta name="description" content="AI 产品经理作品集 —— 产品介绍、演示视频与体验入口">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ============ 顶部导航 ============ -->
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#top"><span class="brand-dot"></span><span id="brandName">作品集</span></a>
+    <nav class="nav" id="nav"></nav>
+  </div>
+</header>
+
+<!-- ============ 个人简介（压缩成一条） ============ -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-line">
+      <h1 class="hero-name" id="heroName"></h1>
+      <span class="hero-title-sep" id="heroTitleSep" hidden>·</span>
+      <span class="hero-kicker" id="heroTitle"></span>
+      <span class="hero-meta" id="heroMeta"></span>
+    </div>
+    <p class="hero-bio" id="heroBio"></p>
+    <p class="hero-hint" id="heroHint"></p>
+  </div>
+</section>
+
+<!-- ============ 产品列表 ============ -->
+<main class="wrap products" id="products"></main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p id="footerText"></p>
+  </div>
+</footer>
+
+<!-- 数据与渲染 -->
+<script src="data/products.js"></script>
+<script src="assets/js/render.js"></script>
+</body>
+</html>
