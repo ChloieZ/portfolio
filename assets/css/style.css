@@ -238,27 +238,27 @@ a { color: inherit; }
 .repo-link:hover { border-color: var(--accent); color: var(--accent); }
 
 /* 放大按钮：视频仅 ~180px 宽，Chrome 会收掉原生控制条里的全屏按钮，须自己补一个。
-   白底深色图标 —— 深色圆点压在深色画面上根本看不见（前一版就是这个毛病）。
+   白底深色图标 —— 深色圆点压在深色画面上根本看不见；24px 放右上角，尽量少占画面。
    图标用内联 SVG，不依赖字体；进全屏后换成「收拢」图标并继续可点，用于退出。 */
 .fs-btn {
-  position: absolute; top: 8px; left: 8px; z-index: 3;
-  width: 30px; height: 30px; padding: 0; cursor: pointer;
-  border: 0; border-radius: 9px;
+  position: absolute; top: 8px; right: 8px; z-index: 3;
+  width: 24px; height: 24px; padding: 0; cursor: pointer;
+  border: 0; border-radius: 7px;
   background-color: rgba(255,255,255,.94);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2316181d' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='M4 9V4h5M20 15v5h-5M15 4h5v5M9 20H4v-5'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: center; background-size: 15px 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
+  background-repeat: no-repeat; background-position: center; background-size: 12px 12px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, .28);
   transition: background-color .18s, transform .18s;
 }
-.fs-btn:hover { background-color: var(--accent); transform: scale(1.06); }
+.fs-btn:hover { background-color: var(--accent); transform: scale(1.08); }
 .fs-btn:hover, .video-frame:fullscreen .fs-btn {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='M4 9V4h5M20 15v5h-5M15 4h5v5M9 20H4v-5'/%3E%3C/svg%3E");
 }
 
-/* 全屏：铺满屏幕，按钮留在左上角换成「收拢」图标，点一下就退出 */
+/* 全屏：铺满屏幕，按钮留在右上角换成「收拢」图标，点一下就退出 */
 .video-frame:fullscreen { aspect-ratio: auto; border-radius: 0; background: #000; }
 .video-frame:fullscreen .fs-btn {
-  top: 20px; left: 20px;
+  top: 16px; right: 16px;
   background-color: rgba(255,255,255,.94);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2316181d' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='M9 4v5H4M15 20v-5h5M20 9h-5V4M4 15h5v5'/%3E%3C/svg%3E");
 }
