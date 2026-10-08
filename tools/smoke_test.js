@@ -11,6 +11,8 @@ function makeEl(tag) {
     tagName: String(tag).toUpperCase(), className: '', textContent: '', innerHTML: '', id: '',
     href: '', src: '', alt: '', style: {}, dataset: {}, children: [],
     appendChild(c) { this.children.push(c); return c; },
+    setAttribute(k, v) { this[k] = v; },
+    getAttribute(k) { return this[k]; },
     addEventListener() {}, classList: { add() {}, remove() {} },
   };
 }
@@ -81,6 +83,8 @@ check('video src 与数据一致', videos.map(v => v.src).join('|') === products
   videos.map(v => v.src).join('|'));
 check('已无「视频待补充」占位', byClass('video-placeholder').length === 0);
 check('video 带 controls 且移动端可内联播放', videos.every(v => v.controls === true && v.playsInline === true));
+check('每个视频帧带自定义全屏按钮（原生控制条会藏起全屏）',
+  byClass('fs-btn').length === products.length, String(byClass('fs-btn').length));
 
 console.log('\n[视频文件存在性（磁盘校验）]');
 products.forEach(p => {

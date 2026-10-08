@@ -10,6 +10,8 @@ function makeEl(tag) {
     tagName: String(tag).toUpperCase(), className: '', textContent: '', innerHTML: '', id: '',
     href: '', src: '', alt: '', style: {}, dataset: {}, children: [],
     appendChild(c) { this.children.push(c); return c; },
+    setAttribute(k, v) { this[k] = v; },
+    getAttribute(k) { return this[k]; },
     addEventListener() {}, classList: { add() {}, remove() {} },
   };
 }

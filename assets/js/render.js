@@ -98,6 +98,35 @@
     if (!nav.children.length) nav.style.display = 'none';
   }
 
+  /* ---------- 全屏 ---------- */
+  function currentFullscreen() {
+    return document.fullscreenElement || document.webkitFullscreenElement || null;
+  }
+
+  function toggleFullscreen(frame, videoEl) {
+    if (currentFullscreen()) {
+      var exit = document.exitFullscreen || document.webkitExitFullscreen;
+      if (exit) exit.call(document);
+      return;
+    }
+    var req = frame.requestFullscreen || frame.webkitRequestFullscreen || frame.msRequestFullscreen;
+    if (req) { req.call(frame); return; }
+    // iOS Safari 只允许对 video 元素本身进全屏
+    if (videoEl && videoEl.webkitEnterFullscreen) videoEl.webkitEnterFullscreen();
+  }
+
+  function fullscreenButton(frame, videoEl) {
+    var btn = el('button', 'fs-btn');
+    btn.type = 'button';
+    btn.title = '全屏观看';
+    btn.setAttribute('aria-label', '全屏观看');
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      toggleFullscreen(frame, videoEl);
+    });
+    return btn;
+  }
+
   /* ---------- 视频 ---------- */
   function buildVideo(video) {
     var v = video || {};
@@ -110,7 +139,11 @@
       videoEl.playsInline = true;
       if (isFilled(v.poster)) videoEl.poster = v.poster;
       videoEl.src = v.src;
+      // 视频只有 180px 宽，Chrome 会藏起原生控制条里的全屏按钮，
+      // 所以自己补一个；双击画面同样是全屏（通用习惯）
+      videoEl.addEventListener('dblclick', function () { toggleFullscreen(frame, videoEl); });
       frame.appendChild(videoEl);
+      frame.appendChild(fullscreenButton(frame, videoEl));
       return frame;
     }
 
