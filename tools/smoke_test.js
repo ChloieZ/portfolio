@@ -104,6 +104,10 @@ check('按钮链接与数据一致', btns.map(a => a.href).join('|') === product
 check('全部为 https 且新标签打开',
   btns.every(a => /^https:\/\//.test(a.href) && a.target === '_blank' && a.rel === 'noopener'));
 check('无「体验入口待补充」', byClass('btn is-empty').length === 0);
+check('每个产品一个源码入口', byClass('repo-link').length === products.length,
+  String(byClass('repo-link').length));
+check('源码入口不在视频帧内（不遮挡 180px 宽的画面）',
+  byClass('video-frame').every(f => f.children.every(c => c.className !== 'repo-link')));
 
 console.log('\n[二维码已移除]');
 const allClasses = all.map(n => n.className).join(' ') + ' ' + gather(registry.nav).map(n => n.className).join(' ');

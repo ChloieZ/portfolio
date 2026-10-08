@@ -184,7 +184,6 @@ a { color: inherit; }
 
 /* --- 第三列：视频 + 入口（做成独立面板，视觉上更清楚） --- */
 .col-media {
-  position: relative;
   display: flex; flex-direction: column; gap: 7px;
   padding: 7px; border-radius: var(--radius-sm);
   background: var(--bg-2); border: 1px solid var(--line);
@@ -209,9 +208,10 @@ a { color: inherit; }
 .video-placeholder .vp-title { font-size: 12px; font-weight: 600; color: var(--ink-2); }
 .video-placeholder .vp-sub { font-size: 10.5px; color: var(--ink-3); font-family: ui-monospace, Menlo, monospace; }
 
-.entry { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.entry { display: flex; flex-direction: row; gap: 6px; min-width: 0; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  flex: 1 1 auto; min-width: 0;
   background: var(--accent); color: #fff; text-decoration: none;
   font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 999px;
   transition: background .18s, transform .18s;
@@ -224,15 +224,18 @@ a { color: inherit; }
 }
 .btn.is-empty:hover { background: #fff; transform: none; }
 
-/* 源码入口：做成视频右上角的浮层小标签，不占垂直空间（媒体列决定行高） */
+/* 源码入口：与「在线体验」并排的次要按钮。
+   不压在视频画面上 —— 视频只有 180px 宽，浮层标签会挡住内容。 */
 .repo-link {
-  position: absolute; top: 13px; right: 13px; z-index: 2;
-  font-size: 11px; font-weight: 600; color: #fff; text-decoration: none;
-  background: rgba(14,16,21,.62); backdrop-filter: blur(4px);
-  padding: 2px 9px; border-radius: 999px;
-  transition: background .18s;
+  flex: 0 0 auto;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap;
+  color: var(--ink-2); background: #fff;
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 9px 12px;
+  transition: border-color .18s, color .18s;
 }
-.repo-link:hover { background: var(--accent); color: #fff; }
+.repo-link:hover { border-color: var(--accent); color: var(--accent); }
 
 /* 放大按钮：视频仅 ~180px 宽，Chrome 会收掉原生控制条里的全屏按钮，须自己补一个。
    白底深色图标 —— 深色圆点压在深色画面上根本看不见（前一版就是这个毛病）。
@@ -281,8 +284,6 @@ a { color: inherit; }
   .col-media { flex-direction: row; align-items: center; gap: 14px; }
   .video-frame, .video-placeholder { flex: 0 0 260px; }
   .col-media .entry { flex: 1; }
-  /* 横向排列时不做浮层，正常参与流式布局 */
-  .repo-link { position: static; align-self: center; }
 }
 
 /* 手机：单列堆叠 */
