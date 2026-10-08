@@ -24,7 +24,7 @@
   --shadow-sm: 0 1px 2px rgba(16,18,24,.05);
 
   --maxw: 1320px;
-  --video-w: 196px;        /* 视频列宽：决定整页高度，调小=更矮 */
+  --video-w: 232px;        /* 视频列宽：这一项直接决定整页高度，调小=整页更矮 */
 }
 
 * { box-sizing: border-box; }
@@ -184,10 +184,12 @@ a { color: inherit; }
 
 /* --- 第三列：视频 + 入口（做成独立面板，视觉上更清楚） --- */
 .col-media {
-  display: flex; flex-direction: column; gap: 7px;
+  display: flex; flex-direction: column; gap: 5px;
   padding: 7px; border-radius: var(--radius-sm);
   background: var(--bg-2); border: 1px solid var(--line);
 }
+/* 标题紧贴视频：全局 .col-title 有 8px 下边距，这里加上 flex gap 会变成 15px，太远 */
+.col-media .col-title { margin-bottom: 0; }
 .col-media .entry { margin-top: auto; }
 
 .video-frame {
@@ -271,7 +273,7 @@ a { color: inherit; }
 /* ---------------- 响应式 ---------------- */
 /* 中屏：文字列收窄，去掉分隔线压力 */
 @media (max-width: 1120px) {
-  :root { --video-w: 196px; }
+  :root { --video-w: 206px; }
   .row-body { gap: 20px; }
   .col-points { padding-left: 20px; }
 }
