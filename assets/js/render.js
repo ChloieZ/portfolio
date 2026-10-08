@@ -118,11 +118,20 @@
   function fullscreenButton(frame, videoEl) {
     var btn = el('button', 'fs-btn');
     btn.type = 'button';
-    btn.title = '全屏观看';
-    btn.setAttribute('aria-label', '全屏观看');
+    btn.title = '放大观看';
+    btn.setAttribute('aria-label', '放大观看');
     btn.addEventListener('click', function (e) {
       e.preventDefault();
       toggleFullscreen(frame, videoEl);
+    });
+    // 标题随全屏状态切换，进全屏后这个按钮就是「退出」入口
+    var sync = function () {
+      var on = currentFullscreen() === frame;
+      btn.title = on ? '退出全屏' : '放大观看';
+      btn.setAttribute('aria-label', btn.title);
+    };
+    ['fullscreenchange', 'webkitfullscreenchange'].forEach(function (ev) {
+      document.addEventListener(ev, sync);
     });
     return btn;
   }
