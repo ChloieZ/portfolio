@@ -24,6 +24,8 @@
  *    label  string  按钮文字，默认「在线体验」
  *    提示：url 可以是网页，也可以是 apk/下载包地址
  *
+ *  repo        string  源码仓库地址（可选）。页面会在体验按钮下方显示一个「源码」链接
+ *
  *  —— 新增视频文件直接丢进 assets/video/ 即可 ——
  */
 
@@ -32,17 +34,17 @@ window.PORTFOLIO = {
   profile: {
     name: '占桂芝',
     title: '产品经理',
-    bio: '专注用技术手段解决真实问题，从需求定义到方案落地。以下是完整的产品作品集，每件都从需求出发，做到可用的成品。',
-    email: '',                                        // 可选
-    github: 'https://github.com/ChloieZ/portfolio',    // 可选
-    resumeUrl: ''                                     // 可选，简历链接
+    bio: '专注用技术手段解决真实问题，从需求定义到方案落地。',
+    email: '',        // 可选
+    github: '',       // 可选
+    resumeUrl: ''     // 可选，简历链接
   },
 
   // ---------- 产品列表（按显示顺序排列）----------
   products: [
     {
       id: 'simple-report',
-      name: 'Simple Report',
+      name: '产品简报',
       tagline: '自动抓取行业信息，每天一份结构化 AI 情报简报',
       role: '独立产品设计 + 开发',
       period: '2026',
@@ -59,7 +61,8 @@ window.PORTFOLIO = {
         '交付形态：每日/每周定时邮件推送'
       ],
       video: { type: 'file', src: 'assets/video/simple-report.mp4', poster: '' },
-      link: { url: 'https://report.guizzhan.xyz:18100/', label: '在线体验' }
+      link: { url: 'https://report.guizzhan.xyz:18100/', label: '在线体验' },
+      repo: 'https://github.com/ChloieZ/Simple-Report'
     },
 
     {
@@ -82,7 +85,8 @@ window.PORTFOLIO = {
         '提供 Android 安装包，可直接装机体验'
       ],
       video: { type: 'file', src: 'assets/video/xinyuan.mp4', poster: '' },
-      link: { url: 'https://xinyuan.guizzhan.xyz:18120/', label: '在线体验' }
+      link: { url: 'https://xinyuan.guizzhan.xyz:18120/', label: '在线体验' },
+      repo: 'https://github.com/ChloieZ/xinyuan'
     },
 
     {
@@ -104,7 +108,8 @@ window.PORTFOLIO = {
         '多图批量上传，结果按图分组，支持一键复制参数'
       ],
       video: { type: 'file', src: 'assets/video/retouch-assistant.mp4', poster: '' },
-      link: { url: 'https://picture.guizzhan.xyz:18110/', label: '在线体验' }
+      link: { url: 'https://picture.guizzhan.xyz:18110/', label: '在线体验' },
+      repo: 'https://github.com/ChloieZ/Picture-Editor'
     }
 
     // 新增产品：复制上面任意一个对象，改掉 id 和内容即可。

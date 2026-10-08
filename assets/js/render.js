@@ -150,6 +150,16 @@
       wrap.appendChild(empty);
     }
 
+    // 源码仓库（可选）
+    if (isFilled(product.repo)) {
+      var repo = el('a', 'repo-link', '源码 ↗');
+      repo.href = product.repo;
+      repo.target = '_blank';
+      repo.rel = 'noopener';
+      repo.title = product.repo;
+      wrap.appendChild(repo);
+    }
+
     return wrap;
   }
 

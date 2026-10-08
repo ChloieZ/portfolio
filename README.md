@@ -1,6 +1,6 @@
 # 产品作品集 · 静态页面
 
-按需求做的列表式静态作品集：**每个产品 = 产品介绍 → 演示视频 → 体验入口**。
+按需求做的列表式静态作品集：**每个产品 = 产品介绍 → 演示视频 → 体验入口 + 源码**。
 
 纯静态，无构建步骤、无依赖，双击 `index.html` 就能看，也可以直接丢到任何静态托管（GitHub Pages / Vercel / Netlify / 对象存储）。
 
@@ -31,11 +31,11 @@
 
 三个产品都已配好演示视频和体验入口：
 
-| 产品 | 视频 | 体验入口 |
-| --- | --- | --- |
-| Simple Report | `assets/video/simple-report.mp4` | https://report.guizzhan.xyz:18100/ |
-| 心愿 | `assets/video/xinyuan.mp4` | https://xinyuan.guizzhan.xyz:18120/ |
-| 图文笔记配图优化助手 | `assets/video/retouch-assistant.mp4` | https://picture.guizzhan.xyz:18110/ |
+| 产品 | 视频 | 体验入口 | 源码 |
+| --- | --- | --- | --- |
+| 产品简报 | `assets/video/simple-report.mp4` | https://report.guizzhan.xyz:18100/ | https://github.com/ChloieZ/Simple-Report |
+| 心愿 | `assets/video/xinyuan.mp4` | https://xinyuan.guizzhan.xyz:18120/ | https://github.com/ChloieZ/xinyuan |
+| 图文笔记配图优化助手 | `assets/video/retouch-assistant.mp4` | https://picture.guizzhan.xyz:18110/ | https://github.com/ChloieZ/Picture-Editor |
 
 > 视频文件名用了 ASCII（`<产品id>.mp4`）而不是中文名，避免 URL 编码和托管平台的兼容问题。
 
@@ -47,7 +47,7 @@
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
-│ 01  Simple Report  一句话介绍    「标签」「标签」「标签」   角色 · 时间 │  ← 行首
+│ 01  产品简报  一句话介绍         「标签」「标签」「标签」   角色 · 时间 │  ← 行首
 │ ┌─────────────────┬┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┬┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┐                │
 │ │ 产品介绍         ┊ 核心亮点         ┊ ┌───────────┐ │                │  ← 行主体
 │ │ 正文……           ┊ • • • •          ┊ │  演示视频  │ │                │
@@ -144,7 +144,15 @@ link: { url: 'https://xxx.com', label: '在线体验' },
 - `url` 留空会显示「体验入口待补充」按钮，方便你一眼看出还没配的产品。
 - 完整地址不在页面上占一行（横向布局里太挤），鼠标悬停按钮即可看到。
 
-### 4. 新增一个产品
+### 4. 源码仓库（可选）
+
+```js
+repo: 'https://github.com/ChloieZ/xinyuan',
+```
+
+填了就会在体验按钮下方显示一个小的「源码 ↗」链接；留空则不显示。
+
+### 5. 新增一个产品
 
 复制 `products` 数组里任意一个 `{ ... }` 对象，粘在末尾，改掉 `id`（英文，别重复）和内容即可。列表顺序 = 数组顺序。
 
