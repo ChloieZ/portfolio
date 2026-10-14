@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>作品集管理后台</title>
+<style>
+  :root { --acc:#4f46e5; --acc2:#eef2ff; --ink:#16181d; --ink2:#4a4f5c; --ink3:#8b91a1;
+          --line:#e6e8ee; --bg:#f7f8fb; --err:#dc2626; --ok:#16a34a; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.6 -apple-system,
+         "PingFang SC","Microsoft YaHei",system-ui,sans-serif; }
+  .wrap { max-width:1000px; margin:0 auto; padding:24px 20px 80px; }
+  header { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.93);
+           backdrop-filter:blur(12px); border-bottom:1px solid var(--line); }
+  .hbar { max-width:1000px; margin:0 auto; padding:12px 20px; display:flex;
+          align-items:center; gap:12px; flex-wrap:wrap; }
+  h1 { font-size:17px; margin:0; }
+  .sp { flex:1; }
+  button { font:inherit; cursor:pointer; border-radius:8px; border:1px solid var(--line);
+           background:#fff; padding:6px 12px; transition:.15s; }
+  button:hover { border-color:var(--acc); color:var(--acc); }
+  button.primary { background:var(--acc); color:#fff; border-color:var(--acc); font-weight:600; }
+  button.primary:hover { background:#3730a3; color:#fff; }
+  button.danger:hover { border-color:var(--err); color:var(--err); }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:12px;
+          padding:16px 18px; margin-top:14px; }
+  .card h2 { font-size:14px; margin:0 0 12px; display:flex; align-items:center; gap:8px; }
+  .idx { background:var(--acc2); color:var(--acc); border-radius:6px; padding:1px 8px;
+         font-size:12px; font-weight:700; }
+  label { display:block; font-size:12px; color:var(--ink3); margin:10px 0 4px; font-weight:600; }
+  input, textarea { width:100%; font:inherit; padding:7px 10px; border:1px solid var(--line);
+                    border-radius:8px; background:#fff; color:var(--ink); }
+  input:focus, textarea:focus { outline:none; border-color:var(--acc); }
+  textarea { resize:vertical; min-height:64px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:0 14px; }
+  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0 14px; }
+  .hint { font-size:11.5px; color:var(--ink3); margin-top:3px; }
+  .row { display:flex; gap:8px; align-items:flex-end; flex-wrap:wrap; }
+  .row > * { flex:1; min-width:120px; }
+  .vid { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .vid code { background:var(--bg); padding:3px 8px; border-radius:6px; font-size:12px; }
+  .msg { padding:10px 14px; border-radius:8px; margin-top:12px; font-size:13px; display:none; }
+  .msg.ok { display:block; background:#f0fdf4; color:var(--ok); border:1px solid #bbf7d0; }
+  .msg.err { display:block; background:#fef2f2; color:var(--err); border:1px solid #fecaca; }
+  .login { max-width:360px; margin:14vh auto; background:#fff; border:1px solid var(--line);
+           border-radius:14px; padding:26px; }
+  .login h1 { font-size:18px; margin:0 0 4px; }
+  .login p { margin:0 0 18px; color:var(--ink3); font-size:13px; }
+  .tools { display:flex; gap:6px; flex-wrap:wrap; }
+  .tools button { padding:4px 9px; font-size:12.5px; }
+  .bar { position:sticky; bottom:0; background:rgba(255,255,255,.95);
+         backdrop-filter:blur(12px); border-top:1px solid var(--line); padding:12px 0; margin-top:18px; }
+  .prog { height:6px; background:var(--line); border-radius:3px; overflow:hidden; width:160px; display:none; }
+  .prog i { display:block; height:100%; width:0; background:var(--acc); }
+</style>
+</head>
+<body>
+
+<header id="bar" style="display:none">
+  <div class="hbar">
+    <h1>作品集管理后台</h1>
+    <span class="sp"></span>
+    <button id="btnView">查看网站</button>
+    <button id="btnLogout">退出</button>
+  </div>
+</header>
+
+<!-- 登录 -->
+<div id="login" class="login">
+  <h1>作品集管理后台</h1>
+  <p>请输入管理密码</p>
+  <label>密码</label>
+  <input type="password" id="pw" autocomplete="current-password">
+  <div style="margin-top:16px"><button class="primary" id="btnLogin" style="width:100%">登录</button></div>
+  <div class="msg" id="loginMsg"></div>
+</div>
+
+<!-- 主界面 -->
+<div class="wrap" id="main" style="display:none">
+  <div class="msg" id="msg"></div>
+
+  <div class="card">
+    <h2>头部信息</h2>
+    <div class="grid2">
+      <div><label>姓名</label><input id="p_name"></div>
+      <div><label>职位</label><input id="p_title"></div>
+    </div>
+    <label>一句话简介</label><input id="p_bio">
+    <div class="grid3">
+      <div><label>邮箱（可选）</label><input id="p_email"></div>
+      <div><label>GitHub（可选）</label><input id="p_github"></div>
+      <div><label>简历链接（可选）</label><input id="p_resume"></div>
+    </div>
+  </div>
+
+  <div id="list"></div>
+
+  <div style="margin-top:14px"><button id="btnAdd">＋ 新增产品</button></div>
+
+  <div class="bar">
+    <button class="primary" id="btnSave">保存并生效</button>
+    <span class="hint" id="dirty" style="margin-left:10px"></span>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var cfg = null, dirty = false;
+
+  function $(id) { return document.getElementById(id); }
+  function msg(text, kind) {
+    var m = $('msg');
+    m.className = 'msg ' + (kind || 'ok');
+    m.textContent = text;
+    if (kind === 'ok') setTimeout(function () { m.className = 'msg'; }, 3500);
+  }
+  function setDirty(v) { dirty = v; $('dirty').textContent = v ? '有未保存的改动' : ''; }
+
+  function api(path, opts) {
+    opts = opts || {};
+    opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+    return fetch(path, opts).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        if (!r.ok || j.ok === false) throw new Error(j.error || ('HTTP ' + r.status));
+        return j;
+      });
+    });
+  }
+
+  /* ---------------- 登录 ---------------- */
+  function showMain() {
+    $('login').style.display = 'none';
+    $('bar').style.display = '';
+    $('main').style.display = '';
+    load();
+  }
+  $('btnLogin').onclick = function () {
+    var b = this; b.disabled = true;
+    api('/api/login', { method: 'POST', body: JSON.stringify({ password: $('pw').value }) })
+      .then(function () { $('loginMsg').className = 'msg'; showMain(); })
+      .catch(function (e) {
+        $('loginMsg').className = 'msg err';
+        $('loginMsg').textContent = e.message;
+      })
+      .then(function () { b.disabled = false; });
+  };
+  $('pw').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('btnLogin').click(); });
+
+  $('btnLogout').onclick = function () {
+    api('/api/logout', { method: 'POST' }).then(function () { location.reload(); });
+  };
+  $('btnView').onclick = function () { window.open('/', '_blank'); };
+
+  /* ---------------- 读取 ---------------- */
+  function load() {
+    api('/api/products').then(function (data) {
+      cfg = data;
+      cfg.profile = cfg.profile || {};
+      cfg.products = cfg.products || [];
+      $('p_name').value = cfg.profile.name || '';
+      $('p_title').value = cfg.profile.title || '';
+      $('p_bio').value = cfg.profile.bio || '';
+      $('p_email').value = cfg.profile.email || '';
+      $('p_github').value = cfg.profile.github || '';
+      $('p_resume').value = cfg.profile.resumeUrl || '';
+      render();
+      setDirty(false);
+    }).catch(function (e) { msg(e.message, 'err'); });
+  }
+
+  /* ---------------- 渲染产品列表 ---------------- */
+  function field(label, value, cls, hint) {
+    var d = document.createElement('div');
+    d.className = cls || '';
+    var l = document.createElement('label');
+    l.textContent = label;
+    var inp = document.createElement('input');
+    inp.value = value || '';
+    d.appendChild(l); d.appendChild(inp);
+    if (hint) { var h = document.createElement('div'); h.className = 'hint'; h.textContent = hint; d.appendChild(h); }
+    d._input = inp;
+    return d;
+  }
+  function area(label, value, hint) {
+    var d = document.createElement('div');
+    var l = document.createElement('label'); l.textContent = label;
+    var t = document.createElement('textarea'); t.value = value || '';
+    d.appendChild(l); d.appendChild(t);
+    if (hint) { var h = document.createElement('div'); h.className = 'hint'; h.textContent = hint; d.appendChild(h); }
+    d._input = t;
+    return d;
+  }
+
+  function render() {
+    var box = $('list');
+    box.innerHTML = '';
+    cfg.products.forEach(function (p, i) {
+      var card = document.createElement('div');
+      card.className = 'card';
+
+      var h = document.createElement('h2');
+      var idx = document.createElement('span'); idx.className = 'idx'; idx.textContent = i + 1;
+      var ttl = document.createElement('span'); ttl.textContent = p.name || '(未命名产品)';
+      h.appendChild(idx); h.appendChild(ttl);
+
+      var tools = document.createElement('span'); tools.className = 'tools'; tools.style.marginLeft = 'auto';
+      var up = document.createElement('button'); up.textContent = '↑'; up.disabled = i === 0;
+      var dn = document.createElement('button'); dn.textContent = '↓'; dn.disabled = i === cfg.products.length - 1;
+      var del = document.createElement('button'); del.textContent = '删除'; del.className = 'danger';
+      up.onclick = function () { swap(i, i - 1); };
+      dn.onclick = function () { swap(i, i + 1); };
+      del.onclick = function () {
+        if (confirm('删除产品「' + (p.name || '') + '」？（视频文件不会被删除）')) {
+          cfg.products.splice(i, 1); render(); setDirty(true);
+        }
+      };
+      tools.appendChild(up); tools.appendChild(dn); tools.appendChild(del);
+      h.appendChild(tools);
+      card.appendChild(h);
+
+      // 名称 / id / 角色
+      var g1 = document.createElement('div'); g1.className = 'grid3';
+      var fName = field('产品名称', p.name, '', '');
+      var fId = field('锚点 id', p.id, '', '小写字母/数字/连字符，不可重复');
+      var fRole = field('角色', p.role, '', '');
+      g1.appendChild(fName); g1.appendChild(fId); g1.appendChild(fRole);
+      card.appendChild(g1);
+
+      var fTagline = field('一句话介绍', p.tagline);
+      card.appendChild(fTagline);
+
+      // 标签
+      var fTags = field('标签', (p.tags || []).join('、'), '', '用「、」或逗号分隔');
+      card.appendChild(fTags);
+
+      // 简介 / 亮点
+      var fIntro = area('产品介绍', (p.intro || []).join('\n'), '每行一段');
+      card.appendChild(fIntro);
+      var fHi = area('核心亮点', (p.highlights || []).join('\n'), '每行一条');
+
+      card.appendChild(fHi);
+
+      // 视频
+      var vwrap = document.createElement('div');
+      vwrap.className = 'vid';
+      var lv = document.createElement('label'); lv.textContent = '演示视频'; lv.style.margin = '10px 0 4px';
+      vwrap.appendChild(lv);
+      var cur = document.createElement('code');
+      cur.textContent = (p.video && p.video.src) || '(未设置)';
+      var fu = document.createElement('input'); fu.type = 'file'; fu.accept = 'video/*';
+      fu.style.maxWidth = '260px';
+      var pr = document.createElement('div'); pr.className = 'prog'; pr.innerHTML = '<i></i>';
+      var upBtn = document.createElement('button'); upBtn.textContent = '上传';
+      upBtn.onclick = function () {
+        var f = fu.files && fu.files[0];
+        if (!f) { msg('先选一个视频文件', 'err'); return; }
+        upBtn.disabled = true; pr.style.display = 'block';
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/upload?name=' + encodeURIComponent(f.name));
+        xhr.upload.onprogress = function (e) {
+          if (e.lengthComputable) pr.firstChild.style.width = (e.loaded / e.total * 100) + '%';
+        };
+        xhr.onload = function () {
+          upBtn.disabled = false; pr.style.display = 'none';
+          pr.firstChild.style.width = '0';
+          var j = {};
+          try { j = JSON.parse(xhr.responseText); } catch (e) {}
+          if (xhr.status === 200 && j.ok) {
+            p.video = { type: 'file', src: j.src, poster: (p.video && p.video.poster) || '' };
+            cur.textContent = j.src;
+            msg('视频已上传：' + j.src + '（' + (j.size / 1048576).toFixed(1) + ' MB）', 'ok');
+            setDirty(true);
+          } else {
+            msg(j.error || ('上传失败 HTTP ' + xhr.status), 'err');
+          }
+        };
+        xhr.onerror = function () { upBtn.disabled = false; pr.style.display = 'none'; msg('上传网络错误', 'err'); };
+        xhr.send(f);
+      };
+      vwrap.appendChild(upBtn); vwrap.appendChild(fu); vwrap.appendChild(cur); vwrap.appendChild(pr);
+      card.appendChild(vwrap);
+
+      // 链接 / 源码
+      var g2 = document.createElement('div'); g2.className = 'grid2';
+      var fUrl = field('体验链接', (p.link && p.link.url) || '', '', '必须 http(s):// 开头');
+      var fLabel = field('按钮文字', (p.link && p.link.label) || '在线体验');
+      g2.appendChild(fUrl); g2.appendChild(fLabel);
+      card.appendChild(g2);
+
+      var fRepo = field('GitHub 源码', p.repo || '', '', '留空则不显示「源码」入口');
+      card.appendChild(fRepo);
+
+      // 收集回填
+      card._read = function () {
+        p.name = fName._input.value.trim();
+        p.id = fId._input.value.trim();
+        p.role = fRole._input.value.trim();
+        p.tagline = fTagline._input.value.trim();
+        p.tags = fTags._input.value.split(/[、,，]/).map(function (s) { return s.trim(); })
+          .filter(Boolean);
+        p.intro = fIntro._input.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+        p.highlights = fHi._input.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+        p.link = { url: fUrl._input.value.trim(), label: fLabel._input.value.trim() || '在线体验' };
+        p.video = p.video || { type: 'file', src: '', poster: '' };
+        p.video.type = p.video.src ? 'file' : 'none';
+        var rp = fRepo._input.value.trim();
+        if (rp) p.repo = rp; else delete p.repo;
+      };
+      card._inputs = [fName, fId, fRole, fTagline, fTags, fIntro, fHi, fUrl, fLabel, fRepo];
+      card._inputs.forEach(function (d) {
+        d._input.addEventListener('input', function () { setDirty(true); ttl.textContent = fName._input.value || '(未命名产品)'; });
+      });
+
+      box.appendChild(card);
+    });
+    $('list')._cards = Array.prototype.slice.call(box.children);
+  }
+
+  function swap(a, b) {
+    var t = cfg.products[a]; cfg.products[a] = cfg.products[b]; cfg.products[b] = t;
+    render(); setDirty(true);
+  }
+
+  function collect() {
+    ($('list')._cards || []).forEach(function (c) { c._read(); });
+    cfg.profile = {
+      name: $('p_name').value.trim(),
+      title: $('p_title').value.trim(),
+      bio: $('p_bio').value.trim(),
+      email: $('p_email').value.trim(),
+      github: $('p_github').value.trim(),
+      resumeUrl: $('p_resume').value.trim()
+    };
+    return cfg;
+  }
+
+  /* ---------------- 新增 / 保存 ---------------- */
+  $('btnAdd').onclick = function () {
+    collect();
+    var n = cfg.products.length + 1;
+    cfg.products.unshift({
+      id: 'product-' + Date.now().toString(36),
+      name: '', tagline: '', role: '独立产品设计 + 开发', tags: [],
+      intro: [], highlights: [],
+      video: { type: 'none', src: '', poster: '' },
+      link: { url: '', label: '在线体验' }
+    });
+    render(); setDirty(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    msg('已新增一个空产品（排在最前），填好后点「保存并生效」', 'ok');
+  };
+
+  $('btnSave').onclick = function () {
+    var b = this; b.disabled = true;
+    var payload;
+    try { payload = collect(); } catch (e) { msg(e.message, 'err'); b.disabled = false; return; }
+    api('/api/products/save', { method: 'POST', body: JSON.stringify(payload) })
+      .then(function (r) { setDirty(false); msg('已保存并生效，共 ' + r.products + ' 个产品', 'ok'); })
+      .catch(function (e) { msg('保存失败：' + e.message, 'err'); })
+      .then(function () { b.disabled = false; });
+  };
+
+  window.addEventListener('beforeunload', function (e) {
+    if (dirty) { e.preventDefault(); e.returnValue = ''; }
+  });
+
+  /* ---------------- 启动 ---------------- */
+  api('/api/session').then(function (s) {
+    if (s.authed) showMain();
+    else if (!s.enabled) {
+      $('loginMsg').className = 'msg err';
+      $('loginMsg').textContent = '服务端未设置 ADMIN_PASSWORD 环境变量，后台已禁用。';
+    }
+  }).catch(function () {});
+})();
+</script>
+</body>
+</html>
