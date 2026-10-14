@@ -233,7 +233,7 @@ BLOCKED_DIRS = {"tools", "deploy", "admin", "node_modules", ".venv"}
 
 
 class SiteFiles(StaticFiles):
-    """三道门：屏蔽点开头路径、屏蔽开发目录、只放行白名单扩展名。"""
+    """四道门：屏蔽点开头路径、屏蔽开发目录、扩展名白名单、无扩展名只放行目录。"""
 
     async def get_response(self, path: str, scope):
         norm = posixpath.normpath("/" + path.replace("\\", "/"))
@@ -243,7 +243,12 @@ class SiteFiles(StaticFiles):
         if segs and segs[0].lower() in BLOCKED_DIRS:
             return PlainTextResponse("Not Found", status_code=404)
         suffix = Path(norm).suffix.lower()
-        if suffix and suffix not in ALLOWED_SUFFIXES:
+        if suffix:
+            if suffix not in ALLOWED_SUFFIXES:
+                return PlainTextResponse("Not Found", status_code=404)
+        elif not (BASE / norm.lstrip("/")).is_dir():
+            # 无扩展名的文件（VERSION、LICENSE 之类）一律不公开；
+            # 目录请求放行，交给 html=True 去找 index.html
             return PlainTextResponse("Not Found", status_code=404)
         return await super().get_response(path, scope)
 
