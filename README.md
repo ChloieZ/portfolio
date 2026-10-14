@@ -29,10 +29,11 @@
 
 ## 当前状态
 
-三个产品都已配好演示视频和体验入口：
+四个产品都已配好演示视频和体验入口：
 
 | 产品 | 视频 | 体验入口 | 源码 |
 | --- | --- | --- | --- |
+| 个人数据分析平台 | `assets/video/data-analysis.mp4` | https://data.guizzhan.xyz:18150/ | https://github.com/ChloieZ/Data-analysis |
 | 产品简报 | `assets/video/simple-report.mp4` | https://report.guizzhan.xyz:18100/ | https://github.com/ChloieZ/Simple-Report |
 | 心愿 | `assets/video/xinyuan.mp4` | https://xinyuan.guizzhan.xyz:18120/ | https://github.com/ChloieZ/xinyuan |
 | 图文笔记配图优化助手 | `assets/video/retouch-assistant.mp4` | https://picture.guizzhan.xyz:18110/ | https://github.com/ChloieZ/Picture-Editor |
