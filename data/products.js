@@ -107,6 +107,27 @@ window.PORTFOLIO = {
       video: { type: 'file', src: 'assets/video/retouch-assistant.mp4', poster: '' },
       link: { url: 'https://picture.guizzhan.xyz:18110/', label: '在线体验' },
       repo: 'https://github.com/ChloieZ/Picture-Editor'
+    },
+
+    {
+      id: 'data-analysis',
+      name: '个人花销分析平台',
+      tagline: '把花销表接成分析库，从数据接入到拖拽出图的一站式轻量 BI',
+      role: '独立产品设计 + 开发',
+      tags: ['数据分析', 'BI', 'ETL', '自助分析', '工具'],
+      intro: [
+        '平时的花销分散在多个 Excel 和 CSV 里，想做趋势和结构分析只能靠人工拼接，同一个指标在不同表里口径还对不上。',
+        '这个平台把「数据接入 → 清洗聚合 → 可视化分析」串成一条链路：表格上传后自动完成统一口径的 ETL 落到分析库，再用数据大屏、SQL 工作台和拖拽式图表工坊做分析。'
+      ],
+      highlights: [
+        '数据接入：上传 Excel/CSV，自动归一列名并清洗日期与金额，支持追加与整月覆盖',
+        '分层建模：原始层 → 明细层 → 汇总层，口径统一且可追溯',
+        '数据大屏：总支出 / 笔数 / 笔均 / 环比指标卡，配趋势、占比、环比对比与明细追溯',
+        'SQL 工作台：只允许查询与建表，结果可一键「保存为表」或导出 CSV',
+        '图表工坊：拖拽维度与度量实时出图，内置多个开箱即用的指标'
+      ],
+      link: { url: 'https://data.guizzhan.xyz:18150/', label: '在线体验' },
+      repo: 'https://github.com/ChloieZ/Data-analysis'
     }
 
     // 新增产品：复制上面任意一个对象，改掉 id 和内容即可。
